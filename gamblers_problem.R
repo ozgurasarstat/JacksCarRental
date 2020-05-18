@@ -22,8 +22,8 @@ while(delta > theta){
     
     Vold[i] <- Vs[i]
     
-    n_action_i     <- min(states[i], 100 - states[i]) + 1
-    actions_i      <- 0:(n_action_i - 1)
+    n_action_i     <- min(states[i], 100 - states[i]) 
+    actions_i      <- 1:n_action_i
     action_value_i <- rep(0, n_action_i)
     
     for(ii in 1:n_action_i){
@@ -51,8 +51,8 @@ pi_star <- rep(-10, nstates)
 
 for(i in 1:nstates){
   
-  n_action_i     <- min(states[i], 100 - states[i]) + 1
-  actions_i      <- 0:(n_action_i - 1)
+  n_action_i     <- min(states[i], 100 - states[i]) 
+  actions_i      <- 1:n_action_i
   action_value_i <- rep(0, n_action_i)
   
   for(ii in 1:n_action_i){

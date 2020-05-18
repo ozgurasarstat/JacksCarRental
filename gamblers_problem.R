@@ -22,13 +22,14 @@ while(delta > theta){
     
     Vold[i] <- Vs[i]
     
-    n_action_value_i <- min(states[i], 100 - states[i]) + 1
-    action_value_i   <- rep(0, n_action_value_i)
+    n_action_i     <- min(states[i], 100 - states[i]) + 1
+    actions_i      <- 0:(n_action_i - 1)
+    action_value_i <- rep(0, n_action_i)
     
-    for(ii in 1:n_action_value_i){
+    for(ii in 1:n_action_i){
       
-      Stplus_win  <- states[i] + (ii - 1)
-      Stplus_lose <- states[i] - (ii - 1)
+      Stplus_win  <- states[i] + actions_i[ii]
+      Stplus_lose <- states[i] - actions_i[ii]
       
       expr1 <- ifelse(Stplus_win == 100, 0, 0) * ph + 0 * (1 - ph)
       expr2 <- ifelse(Stplus_win == 100, 1, Vs[states == Stplus_win]) * ph + 
@@ -50,23 +51,24 @@ pi_star <- rep(-10, nstates)
 
 for(i in 1:nstates){
   
-  n_action_value_i <- min(states[i], 100 - states[i]) + 1
-  action_value_i   <- rep(0, n_action_value_i)
+  n_action_i     <- min(states[i], 100 - states[i]) + 1
+  actions_i      <- 0:(n_action_i - 1)
+  action_value_i <- rep(0, n_action_i)
   
-  for(ii in 1:n_action_value_i){
+  for(ii in 1:n_action_i){
     
-    Stplus_win  <- states[i] + (ii - 1)
-    Stplus_lose <- states[i] - (ii - 1)
+    Stplus_win  <- states[i] + actions_i[ii]
+    Stplus_lose <- states[i] - actions_i[ii]
     
-    expr1 <- ifelse(Stplus_win == 100, 0, 0) * ph + 0 * (1 - ph)
-    expr2 <- ifelse(Stplus_win == 100, 1, Vs[states == Stplus_win]) * ph + 
+    expr1 <- ifelse(Stplus_win == 100, 1, 0) * ph + 0 * (1 - ph)
+    expr2 <- ifelse(Stplus_win == 100, 0, Vs[states == Stplus_win]) * ph + 
       ifelse(Stplus_lose == 0, 0, Vs[states == Stplus_lose]) * (1 - ph)
     
     action_value_i[ii] <- expr1 + expr2
     
   }
   
-  pi_star[i] <- max(which(action_value_i == max(action_value_i))) - 1
+  pi_star[i] <- max(actions_i[which(action_value_i == max(action_value_i))])
   
 }
 
